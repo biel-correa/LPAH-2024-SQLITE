@@ -56,6 +56,18 @@ export default function App() {
     }
   };
 
+  const handleToggleComplete = ({ id, title, complete }) => {
+    updateTask(id, title, complete == 'false' ? 'true' : 'false', (success, data) => {
+      if (success) loadTasks();
+    });
+  }
+
+  const renderToggleComplete = (item) => {
+    return item.complete == 'false'
+      ? <Button title="Desfazer" color="red" onPress={() => handleToggleComplete(item)} />
+      : <Button title="Completar" color="green" onPress={() => handleToggleComplete(item)} />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -73,6 +85,7 @@ export default function App() {
             <View style={styles.listItem}>
               <Text>{item.title}</Text>
               <View style={styles.buttons}>
+                {renderToggleComplete(item)}
                 <Button title="Editar" onPress={() => handleEdit(item.id, item.title)} />
                 <Button title="Deletar" onPress={() => handleDelete(item.id)} />
               </View>
