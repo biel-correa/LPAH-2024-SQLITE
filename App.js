@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { initDB, insertTask, fetchTasks, deleteTask, updateTask } from './Database';
 
 export default function App() {
@@ -68,6 +69,12 @@ export default function App() {
       : <Button title="Completar" color="green" onPress={() => handleToggleComplete(item)} />;
   }
 
+  const renderIcon = (item) => {
+    return item.complete == 'false'
+      ? <AntDesign name="checkcircle" size={24} color="green" />
+      : <AntDesign name="closecircle" size={24} color="red" />;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -83,7 +90,10 @@ export default function App() {
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.listItem}>
-              <Text>{item.title}</Text>
+              <Text>
+                {renderIcon(item)}
+                {item.title}
+              </Text>
               <View style={styles.buttons}>
                 {renderToggleComplete(item)}
                 <Button title="Editar" onPress={() => handleEdit(item.id, item.title)} />
